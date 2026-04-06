@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fair Pass — Fair Tickets. Real Fans. No Bots.</title>
+  <meta name="description" content="The ticketing platform that puts fans first with prepaid deposits, blind auctions, and verified identity — so real fans get real tickets at fair prices.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Fair Pass — Fair Tickets. Real Fans. No Bots.">
+  <meta property="og:description" content="The ticketing platform that puts fans first with prepaid deposits, blind auctions, and verified identity.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://ryankolean.github.io/fair-pass/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fair Pass — Fair Tickets. Real Fans. No Bots.">
+  <meta name="twitter:description" content="The ticketing platform that puts fans first with prepaid deposits, blind auctions, and verified identity.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230D6E6E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='system-ui' font-weight='700' font-size='16' fill='white'%3EFP%3C/text%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       ============================================================ */
+    :root {
+      --c-primary: #0D6E6E;
+      --c-primary-light: #10908f;
+      --c-secondary: #F59E0B;
+      --c-accent: #7C3AED;
+      --c-dark: #0F172A;
+      --c-dark-mid: #1A2744;
+      --c-light: #F8FAFC;
+      --c-light-dim: #EEF2F7;
+      --c-text: #334155;
+      --c-text-light: #94A3B8;
+      --c-text-on-dark: #CBD5E1;
+
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--c-text);
+      background: var(--c-light);
+      overflow-x: hidden;
+    }
+
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+
+    /* ============================================================
+       UTILITY
+       ============================================================ */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* Scroll-reveal base */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ============================================================
+       NAVIGATION
+       ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 0;
+      transition: background 0.3s, box-shadow 0.3s, padding 0.3s;
+    }
+    .nav.scrolled {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+      padding: 0.75rem 0;
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: #fff;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav__logo-mark {
+      width: 32px; height: 32px;
+      background: var(--c-primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .nav__cta {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--c-dark);
+      background: var(--c-secondary);
+      padding: 0.6rem 1.4rem;
+      border-radius: 100px;
+      transition: transform 0.2s var(--ease-out-expo), box-shadow 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .nav__cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      background: var(--c-dark);
+      overflow: hidden;
+    }
+
+    /* Animated mesh gradient background */
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero__bg::before {
+      content: '';
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      top: -10%;
+      left: -10%;
+      background:
+        radial-gradient(ellipse 600px 500px at 20% 50%, rgba(13, 110, 110, 0.35) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 75% 30%, rgba(124, 58, 237, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 400px 350px at 60% 80%, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+      animation: meshDrift 20s ease-in-out infinite alternate;
+    }
+    .hero__bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      background-size: 256px;
+      opacity: 1;
+    }
+
+    @keyframes meshDrift {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(-2%, 1.5%) scale(1.02); }
+      100% { transform: translate(1%, -1%) scale(1.01); }
+    }
+
+    /* Grid pattern overlay */
+    .hero__grid {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      padding: 8rem 0 6rem;
+      max-width: 800px;
+    }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--c-secondary);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+    }
+    .hero__badge-dot {
+      width: 6px; height: 6px;
+      background: var(--c-secondary);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero__headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.05;
+      color: #fff;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+    .hero__headline em {
+      font-style: normal;
+      color: var(--c-secondary);
+    }
+
+    .hero__sub {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--c-text-on-dark);
+      max-width: 600px;
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.9rem 2rem;
+      border-radius: 100px;
+      transition: transform 0.2s var(--ease-out-expo), box-shadow 0.3s;
+      letter-spacing: 0.01em;
+    }
+    .btn--primary {
+      background: var(--c-primary);
+      color: #fff;
+    }
+    .btn--primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(13, 110, 110, 0.4);
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--c-text-on-dark);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn--ghost:hover {
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-1px);
+    }
+    .btn--secondary {
+      background: var(--c-secondary);
+      color: var(--c-dark);
+    }
+    .btn--secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(245, 158, 11, 0.35);
+    }
+    .btn__arrow {
+      transition: transform 0.2s;
+    }
+    .btn:hover .btn__arrow {
+      transform: translateX(3px);
+    }
+
+    .hero__backed {
+      margin-top: 3.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--c-text-light);
+    }
+    .hero__backed-line {
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* ============================================================
+       SECTION: PROBLEM
+       ============================================================ */
+    .problem {
+      padding: 7rem 0;
+      background: var(--c-light);
+      position: relative;
+    }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--c-primary);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 4.5vw, 3.25rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--c-dark);
+      margin-bottom: 3.5rem;
+    }
+
+    .problem__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .problem__card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .problem__card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--c-secondary), var(--c-accent));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .problem__card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+    .problem__card:hover::before {
+      opacity: 1;
+    }
+
+    .problem__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--c-secondary);
+    }
+
+    .problem__stat {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.75rem;
+      color: var(--c-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .problem__desc {
+      font-size: 0.95rem;
+      color: var(--c-text);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       SECTION: HOW IT WORKS
+       ============================================================ */
+    .how {
+      padding: 7rem 0;
+      background: var(--c-light-dim);
+      position: relative;
+    }
+
+    .how__steps {
+      display: grid;
+      gap: 0;
+      position: relative;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      align-items: start;
+      min-height: 200px;
+    }
+
+    .step__content {
+      padding: 1.5rem 0;
+    }
+
+    .step:nth-child(odd) .step__content { grid-column: 1; text-align: right; padding-right: 2rem; }
+    .step:nth-child(odd) .step__timeline { grid-column: 2; }
+    .step:nth-child(odd) .step__spacer { grid-column: 3; }
+    .step:nth-child(even) .step__spacer { grid-column: 1; }
+    .step:nth-child(even) .step__timeline { grid-column: 2; }
+    .step:nth-child(even) .step__content { grid-column: 3; text-align: left; padding-left: 2rem; }
+
+    .step__timeline {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .step__number {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--c-primary);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 6px var(--c-light-dim), 0 4px 20px rgba(13, 110, 110, 0.25);
+    }
+
+    .step__line {
+      width: 2px;
+      flex: 1;
+      background: linear-gradient(to bottom, var(--c-primary), rgba(13, 110, 110, 0.15));
+      min-height: 80px;
+    }
+    .step:last-child .step__line { display: none; }
+
+    .step__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--c-dark);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step__desc {
+      font-size: 0.95rem;
+      color: var(--c-text);
+      line-height: 1.65;
+      max-width: 380px;
+    }
+    .step:nth-child(odd) .step__desc { margin-left: auto; }
+
+    .step__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(13, 110, 110, 0.08);
+      color: var(--c-primary);
+      margin-bottom: 0.75rem;
+    }
+    .step:nth-child(odd) .step__icon { margin-left: auto; }
+
+    /* ============================================================
+       SECTION: TRUEFAN
+       ============================================================ */
+    .truefan {
+      padding: 7rem 0;
+      background: var(--c-dark);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .truefan::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(13, 110, 110, 0.2) 0%, transparent 70%);
+      top: -200px; right: -200px;
+    }
+
+    .truefan__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .truefan__score {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-ring {
+      position: relative;
+      width: 280px;
+      height: 280px;
+    }
+    .score-ring__svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .score-ring__bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.06);
+      stroke-width: 8;
+    }
+    .score-ring__fill {
+      fill: none;
+      stroke: url(#scoreGradient);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 754;
+      stroke-dashoffset: 754;
+      transition: stroke-dashoffset 1.5s var(--ease-out-expo);
+    }
+    .score-ring.visible .score-ring__fill {
+      stroke-dashoffset: 188; /* 75% of 754 = 565.5, so offset = 754 - 565.5 ≈ 188 */
+    }
+    .score-ring__label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .score-ring__value {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 3.5rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: #fff;
+    }
+    .score-ring__text {
+      font-size: 0.85rem;
+      color: var(--c-text-light);
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+
+    .truefan__copy h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    .truefan__text {
+      font-size: 1.05rem;
+      color: var(--c-text-on-dark);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .truefan__callout {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 3px solid var(--c-secondary);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+      color: var(--c-text-on-dark);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       SECTION: FOR VENUES & ARTISTS
+       ============================================================ */
+    .partners {
+      padding: 7rem 0;
+      background: var(--c-light);
+    }
+
+    .partners__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .partners__card {
+      padding: 2.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: #fff;
+      transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s;
+    }
+    .partners__card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    }
+
+    .partners__card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .partners__card:first-child .partners__card-icon {
+      background: rgba(124, 58, 237, 0.1);
+      color: var(--c-accent);
+    }
+    .partners__card:last-child .partners__card-icon {
+      background: rgba(13, 110, 110, 0.1);
+      color: var(--c-primary);
+    }
+
+    .partners__card h3 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--c-dark);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .partners__card p {
+      font-size: 0.95rem;
+      color: var(--c-text);
+      line-height: 1.65;
+    }
+
+    .partners__cta {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    /* ============================================================
+       SECTION: MARKET TIMING
+       ============================================================ */
+    .timing {
+      padding: 4.5rem 0;
+      background: linear-gradient(135deg, var(--c-primary), #0a5555);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .timing::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 256px;
+    }
+
+    .timing__inner {
+      position: relative;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .timing h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .timing p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      opacity: 0.9;
+    }
+
+    /* ============================================================
+       SECTION: WAITLIST
+       ============================================================ */
+    .waitlist {
+      padding: 7rem 0;
+      background: var(--c-dark);
+      color: #fff;
+      position: relative;
+    }
+    .waitlist::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+      bottom: -200px; left: -200px;
+    }
+
+    .waitlist__inner {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .waitlist h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .waitlist__sub {
+      font-size: 1.05rem;
+      color: var(--c-text-on-dark);
+      margin-bottom: 2.5rem;
+    }
+
+    .waitlist__toggle {
+      display: inline-flex;
+      background: rgba(255,255,255,0.06);
+      border-radius: 100px;
+      padding: 4px;
+      margin-bottom: 2rem;
+      gap: 4px;
+    }
+
+    .waitlist__toggle-btn {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--c-text-light);
+      background: transparent;
+      padding: 0.5rem 1.25rem;
+      border-radius: 100px;
+      transition: all 0.25s var(--ease-out-expo);
+    }
+    .waitlist__toggle-btn.active {
+      background: var(--c-primary);
+      color: #fff;
+    }
+    .waitlist__toggle-btn:hover:not(.active) {
+      color: #fff;
+    }
+
+    .waitlist__form {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .waitlist__input {
+      flex: 1;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      padding: 0.9rem 1.25rem;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .waitlist__input::placeholder {
+      color: var(--c-text-light);
+    }
+    .waitlist__input:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(13, 110, 110, 0.2);
+    }
+
+    .waitlist__fine {
+      font-size: 0.8rem;
+      color: var(--c-text-light);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      padding: 2.5rem 0;
+      background: var(--c-dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer__copy {
+      font-size: 0.8rem;
+      color: var(--c-text-light);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer__links a {
+      font-size: 0.8rem;
+      color: var(--c-text-light);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover {
+      color: #fff;
+    }
+
+    .footer__social {
+      display: flex;
+      gap: 1rem;
+    }
+    .footer__social a {
+      color: var(--c-text-light);
+      transition: color 0.2s;
+    }
+    .footer__social a:hover {
+      color: #fff;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .truefan__inner {
+        gap: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .problem__grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+
+      /* Collapse timeline to linear on mobile */
+      .step {
+        grid-template-columns: 56px 1fr;
+        min-height: auto;
+      }
+      .step__spacer { display: none !important; }
+      .step:nth-child(odd) .step__content,
+      .step:nth-child(even) .step__content {
+        grid-column: 2;
+        text-align: left;
+        padding: 1rem 0 1.5rem 1rem;
+      }
+      .step:nth-child(odd) .step__timeline,
+      .step:nth-child(even) .step__timeline {
+        grid-column: 1;
+      }
+      .step:nth-child(odd) .step__icon,
+      .step:nth-child(even) .step__icon { margin-left: 0; }
+      .step:nth-child(odd) .step__desc { margin-left: 0; }
+
+      .truefan__inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .truefan__score { order: -1; }
+      .truefan__callout { text-align: left; }
+
+      .partners__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .waitlist__form {
+        flex-direction: column;
+      }
+
+      .footer__inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero__content { padding: 6.5rem 0 4rem; }
+      .hero__actions { flex-direction: column; }
+      .hero__actions .btn { justify-content: center; }
+      .waitlist__toggle { flex-wrap: wrap; justify-content: center; }
+      .score-ring { width: 220px; height: 220px; }
+      .score-ring__value { font-size: 2.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================== NAV ============================== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo" aria-label="Fair Pass home">
+        <span class="nav__logo-mark">FP</span>
+        Fair Pass
+      </a>
+      <a href="#waitlist" class="nav__cta">Join Waitlist</a>
+    </div>
+  </nav>
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__grid" aria-hidden="true"></div>
+    <div class="container hero__content">
+      <div class="hero__badge reveal">
+        <span class="hero__badge-dot" aria-hidden="true"></span>
+        Coming Summer 2026
+      </div>
+      <h1 class="hero__headline reveal reveal-delay-1">
+        Fair Tickets.<br>Real Fans.<br><em>No Bots.</em>
+      </h1>
+      <p class="hero__sub reveal reveal-delay-2">
+        The ticketing platform that puts fans first with prepaid deposits, blind auctions, and verified identity&nbsp;&mdash; so real fans get real tickets at fair prices.
+      </p>
+      <div class="hero__actions reveal reveal-delay-3">
+        <a href="#waitlist" class="btn btn--primary">
+          Join the Waitlist
+          <svg class="btn__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#how" class="btn btn--ghost">See How It Works</a>
+      </div>
+      <div class="hero__backed reveal reveal-delay-4">
+        <span class="hero__backed-line" aria-hidden="true"></span>
+        Backed by Summit Software Solutions
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PROBLEM ============================== -->
+  <section class="problem" id="problem">
+    <div class="container">
+      <span class="section-label reveal">The Problem</span>
+      <h2 class="section-title reveal reveal-delay-1">The ticket game is rigged.</h2>
+      <div class="problem__grid">
+        <div class="problem__card reveal reveal-delay-1">
+          <div class="problem__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="m7 8 3 3-3 3"/><line x1="13" y1="14" x2="17" y2="14"/></svg>
+          </div>
+          <div class="problem__stat">160 Million Bots</div>
+          <p class="problem__desc">A single event saw 160M bot requests vs. 1.66M real fans. Bots are faster than you'll ever be.</p>
+        </div>
+        <div class="problem__card reveal reveal-delay-2">
+          <div class="problem__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="problem__stat">1,000% Markups</div>
+          <p class="problem__desc">Scalpers buy at face value and resell at 10x. Artists and fans see none of that money.</p>
+        </div>
+        <div class="problem__card reveal reveal-delay-3">
+          <div class="problem__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="problem__stat">Fastest Finger Wins</div>
+          <p class="problem__desc">If you blink, you lose. The current system rewards speed, not loyalty.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== HOW IT WORKS ============================== -->
+  <section class="how" id="how">
+    <div class="container">
+      <span class="section-label reveal">The Solution</span>
+      <h2 class="section-title reveal reveal-delay-1">How Fair Pass Works</h2>
+      <div class="how__steps">
+
+        <!-- Step 1 -->
+        <div class="step">
+          <div class="step__content reveal">
+            <div class="step__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3 class="step__title">Verify Once, Access Forever</h3>
+            <p class="step__desc">Create your account and verify your identity. One person, one account. Bots can't fake being human.</p>
+          </div>
+          <div class="step__timeline" aria-hidden="true">
+            <div class="step__number">1</div>
+            <div class="step__line"></div>
+          </div>
+          <div class="step__spacer"></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step">
+          <div class="step__spacer"></div>
+          <div class="step__timeline" aria-hidden="true">
+            <div class="step__number">2</div>
+            <div class="step__line"></div>
+          </div>
+          <div class="step__content reveal">
+            <div class="step__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="12" cy="12" r="4"/><path d="M2 8h20"/></svg>
+            </div>
+            <h3 class="step__title">Put Skin in the Game</h3>
+            <p class="step__desc">Deposit 20% of the ticket price to join the Fair Drop pool. Your deposit applies to your ticket if you win, or gets refunded if you don't.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step">
+          <div class="step__content reveal">
+            <div class="step__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3 class="step__title">Bid What It's Worth to You</h3>
+            <p class="step__desc">During a multi-day blind auction, submit your max price. No one sees your bid. Speed doesn't matter&nbsp;&mdash; everyone has days, not seconds.</p>
+          </div>
+          <div class="step__timeline" aria-hidden="true">
+            <div class="step__number">3</div>
+            <div class="step__line"></div>
+          </div>
+          <div class="step__spacer"></div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step">
+          <div class="step__spacer"></div>
+          <div class="step__timeline" aria-hidden="true">
+            <div class="step__number">4</div>
+            <div class="step__line"></div>
+          </div>
+          <div class="step__content reveal">
+            <div class="step__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+            </div>
+            <h3 class="step__title">Get Your Ticket — or Get in Line</h3>
+            <p class="step__desc">Winners pay the clearing price (often lower than their max bid). Didn't get in? You're on the waitlist&nbsp;&mdash; if someone can't go, you're next at face value.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TRUEFAN ============================== -->
+  <section class="truefan" id="truefan">
+    <div class="container truefan__inner">
+      <div class="truefan__copy reveal">
+        <span class="section-label" style="color: var(--c-secondary);">TrueFan Score</span>
+        <h2>Real fans get rewarded.</h2>
+        <p class="truefan__text">
+          Your TrueFan score grows every time you buy a ticket, attend a show, and participate in Fair Drops. Higher scores mean better chances in tiebreakers&nbsp;&mdash; because loyalty should count.
+        </p>
+        <div class="truefan__callout">
+          <strong>No resale. Ever.</strong> If you can't go, your ticket goes to the next fan on the waitlist at face value. Zero scalper incentive.
+        </div>
+      </div>
+      <div class="truefan__score reveal reveal-delay-2">
+        <div class="score-ring" id="scoreRing">
+          <svg class="score-ring__svg" viewBox="0 0 256 256">
+            <defs>
+              <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#0D6E6E"/>
+                <stop offset="50%" stop-color="#F59E0B"/>
+                <stop offset="100%" stop-color="#7C3AED"/>
+              </linearGradient>
+            </defs>
+            <circle class="score-ring__bg" cx="128" cy="128" r="120"/>
+            <circle class="score-ring__fill" cx="128" cy="128" r="120"/>
+          </svg>
+          <div class="score-ring__label">
+            <span class="score-ring__value">847</span>
+            <span class="score-ring__text">TrueFan Score</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PARTNERS ============================== -->
+  <section class="partners" id="partners">
+    <div class="container">
+      <span class="section-label reveal">For the Industry</span>
+      <h2 class="section-title reveal reveal-delay-1">Built for independent music.</h2>
+      <div class="partners__grid">
+        <div class="partners__card reveal reveal-delay-1">
+          <div class="partners__card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/></svg>
+          </div>
+          <h3>For Artists</h3>
+          <p>Know your real fans. Set fair prices. See actual demand before your show. Keep the revenue that used to go to scalpers.</p>
+        </div>
+        <div class="partners__card reveal reveal-delay-2">
+          <div class="partners__card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3>For Venues</h3>
+          <p>Lower fees than the big platforms. Full attendee data ownership. Anti-bot protection included. Daily payouts.</p>
+        </div>
+      </div>
+      <div class="partners__cta reveal reveal-delay-3">
+        <a href="mailto:partners@fairpass.io" class="btn btn--primary">
+          Partner With Us
+          <svg class="btn__arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== MARKET TIMING ============================== -->
+  <section class="timing">
+    <div class="container timing__inner reveal">
+      <h2>The market is opening.</h2>
+      <p>The DOJ just forced Ticketmaster to allow competing platforms for the first time in a decade. 30+ states are still suing. The UK is banning for-profit resale. Fair Pass is built for this moment.</p>
+    </div>
+  </section>
+
+  <!-- ============================== WAITLIST ============================== -->
+  <section class="waitlist" id="waitlist">
+    <div class="container waitlist__inner">
+      <h2 class="reveal">Be first in line.</h2>
+      <p class="waitlist__sub reveal reveal-delay-1">Join the waitlist to get early access when Fair Pass launches.</p>
+
+      <div class="waitlist__toggle reveal reveal-delay-2" role="radiogroup" aria-label="I am a">
+        <button class="waitlist__toggle-btn active" role="radio" aria-checked="true" data-type="fan">Fan</button>
+        <button class="waitlist__toggle-btn" role="radio" aria-checked="false" data-type="venue">Venue</button>
+        <button class="waitlist__toggle-btn" role="radio" aria-checked="false" data-type="artist">Artist</button>
+      </div>
+
+      <form class="waitlist__form reveal reveal-delay-3" action="mailto:waitlist@fairpass.io" method="GET" id="waitlistForm">
+        <label for="waitlistEmail" class="sr-only">Email address</label>
+        <input
+          class="waitlist__input"
+          type="email"
+          id="waitlistEmail"
+          name="subject"
+          placeholder="you@email.com"
+          required
+          autocomplete="email"
+        >
+        <button type="submit" class="btn btn--secondary">Join</button>
+      </form>
+      <p class="waitlist__fine reveal reveal-delay-4">We'll never spam you. Unsubscribe anytime.</p>
+    </div>
+  </section>
+
+  <!-- ============================== FOOTER ============================== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__copy">Fair Pass &copy; 2026 Summit Software Solutions LLC</p>
+      <ul class="footer__links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="mailto:hello@fairpass.io">Contact</a></li>
+      </ul>
+      <div class="footer__social" aria-label="Social links">
+        <a href="#" aria-label="X (Twitter)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================== SCRIPTS ============================== -->
+  <script>
+    // ---- Nav scroll behavior ----
+    const nav = document.querySelector('.nav');
+    let lastScroll = 0;
+
+    function onScroll() {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 60);
+      lastScroll = y;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ---- Scroll-reveal with Intersection Observer ----
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // ---- Score ring animation ----
+    const scoreRing = document.getElementById('scoreRing');
+    const scoreObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          scoreRing.classList.add('visible');
+          scoreObserver.unobserve(scoreRing);
+        }
+      });
+    }, { threshold: 0.3 });
+    scoreObserver.observe(scoreRing);
+
+    // ---- Waitlist toggle ----
+    const toggleBtns = document.querySelectorAll('.waitlist__toggle-btn');
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        toggleBtns.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-checked', 'true');
+      });
+    });
+
+    // ---- Waitlist form ----
+    const waitlistForm = document.getElementById('waitlistForm');
+    waitlistForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('waitlistEmail').value;
+      const type = document.querySelector('.waitlist__toggle-btn.active').dataset.type;
+      const subject = encodeURIComponent(`Fair Pass Waitlist: ${type}`);
+      const body = encodeURIComponent(`Email: ${email}\nType: ${type}\n\nI'd like to join the Fair Pass waitlist!`);
+      window.location.href = `mailto:waitlist@fairpass.io?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
