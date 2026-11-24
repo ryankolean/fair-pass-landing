@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAIRPASS Brand Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one long poster-black page. Each section opens with an Anton label and shows the rule as a real example first, then the words. Single dark look on purpose: the brand is always on black. */
+:root {
+  --night: #0A0A12;
+  --panel: #13131f;
+  --line: #262638;
+  --ice: #E8ECFF;
+  --ice-dim: #B9C2EC;
+  --blue: #2E5BFF;
+  --blue-tint: #8FA6FF;
+  --magenta: #FF2E88;
+  --display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+body { background: var(--night); color: var(--ice); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 64px; }
+section { display: grid; gap: 20px; min-width: 0; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-transform: uppercase; margin: 0; letter-spacing: 0.02em; text-wrap: balance; }
+h2 { font-size: 40px; line-height: 1; }
+h2 small { display: block; font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: var(--blue-tint); margin-bottom: 8px; }
+h3 { font-size: 22px; line-height: 1.1; }
+p { margin: 0; max-width: 65ch; color: var(--ice-dim); }
+p strong { color: var(--ice); font-weight: 600; }
+ul.rules { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 70ch; color: var(--ice-dim); }
+ul.rules b { color: var(--ice); font-weight: 600; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.cap { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ice-dim); }
+
+/* Hero */
+.hero { display: grid; gap: 28px; padding-block: 12px 8px; border-bottom: 1px solid var(--line); padding-bottom: 40px; }
+.wordmark { font-family: var(--display); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ice); line-height: 0.9; }
+.hero .wordmark { font-size: clamp(64px, 16vw, 168px); }
+.hero p { font-size: 17px; }
+.stack { font-family: var(--display); text-transform: uppercase; line-height: 1.02; letter-spacing: 0.02em; color: var(--ice); }
+.stack span { display: block; }
+.stack .hl { color: var(--magenta); }
+.stack.mag .hl { color: var(--blue); }
+.hero .stack { font-size: clamp(34px, 7vw, 64px); }
+
+/* Color */
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.sw { display: grid; gap: 6px; }
+.sw i { display: block; height: 72px; border-radius: 6px; border: 1px solid var(--line); }
+.sw b { font-weight: 600; }
+.sw code, code.inline { font-family: var(--mono); font-size: 13px; color: var(--ice-dim); }
+.sw span { font-size: 13px; color: var(--ice-dim); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ice-dim); font-weight: 600; }
+td .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -1px; margin-right: 6px; }
+
+/* Type */
+.spec { display: grid; grid-template-columns: 1fr; gap: 4px; }
+.spec .sample-d { font-family: var(--display); text-transform: uppercase; font-size: 56px; line-height: 1; letter-spacing: 0.02em; }
+.spec .sample-b { font-family: var(--body); font-size: 20px; color: var(--ice); }
+.scale { font-variant-numeric: tabular-nums; }
+
+/* Posts */
+.posts { display: flex; flex-wrap: wrap; gap: 20px; }
+.post { width: 300px; max-width: 100%; aspect-ratio: 4 / 5; background: var(--night); border: 1px solid var(--line); border-radius: 6px;
+  display: grid; grid-template-rows: auto 1fr auto; padding: 18px; box-sizing: border-box; gap: 8px; overflow: hidden; }
+.post.sq { aspect-ratio: 1 / 1; grid-template-rows: 1fr auto; }
+.post .top { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue-tint); }
+.post.mag .top { color: var(--magenta); }
+.post .mid { display: grid; align-content: center; gap: 8px; }
+.post .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.post .pair div { display: grid; gap: 2px; }
+.post .lbl { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ice-dim); }
+.post .val { font-family: var(--display); font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
+.post .big { font-family: var(--display); font-size: 100px; line-height: 0.9; color: var(--blue); }
+.post.mag .big { color: var(--magenta); }
+.post .stack { font-size: 21px; }
+.post.sq .stack { font-size: 34px; align-self: center; }
+.post .foot { display: flex; justify-content: space-between; align-items: end; gap: 8px; font-size: 10px; color: var(--ice-dim); }
+.post .foot .wordmark { font-size: 20px; }
+.variant { display: grid; gap: 6px; }
+.variant .cap { color: var(--ice); }
+
+/* Wordmark */
+.marks { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+.mark-box { background: var(--night); border: 1px solid var(--line); border-radius: 6px; padding: 28px 32px; display: grid; place-items: center; }
+.mark-box .wordmark { font-size: 56px; }
+.avatar { width: 140px; height: 140px; border-radius: 50%; background: var(--night); border: 1px solid var(--line); display: grid; place-items: center; }
+.avatar .wordmark { font-size: 40px; text-align: center; line-height: 0.92; }
+.avatar .wordmark span { display: block; }
+.avatar .wordmark span:last-child { color: var(--blue); }
+
+/* Do / don't */
+.dd { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.dd h3 { color: var(--blue-tint); }
+.dd .dont h3 { color: var(--magenta); }
+
+pre { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow-x: auto;
+  font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--ice); }
+.foot-note { font-size: 13px; color: var(--ice-dim); border-top: 1px solid var(--line); padding-top: 20px; }
+a { color: var(--blue-tint); }
+:focus-visible { outline: 2px solid var(--blue-tint); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="wordmark">FAIRPASS</div>
+    <div class="stack" aria-label="The price on the ticket should be the price of the ticket.">
+      <span>The price</span><span>on the ticket</span><span class="hl">should be</span><span>the price</span><span>of the ticket.</span>
+    </div>
+    <p>Brand guide, version 1, Nov 23, 2026. A loud gig-poster look on a black background, built for the Detroit price-gap campaign and everything after it.</p>
+  </header>
+
+  <section id="name">
+    <h2><small>01</small>The name</h2>
+    <ul class="rules">
+      <li><b>Always FAIRPASS:</b> one word, all caps, in the wordmark, in headlines and in captions.</li>
+      <li><b>Never:</b> Fair Pass, FairPass, Fairpass or FP on its own.</li>
+      <li><b>Social handle:</b> @fairpasstix, written in lowercase like every handle.</li>
+    </ul>
+  </section>
+
+  <section id="slogan">
+    <h2><small>02</small>The slogan</h2>
+    <p><strong>The price on the ticket should be the price of the ticket.</strong> It comes from the Detroit campaign plan and is the core message of the brand.</p>
+    <div class="grid2">
+      <div class="panel">
+        <span class="cap">Blue lead (default)</span>
+        <div class="stack" style="font-size:38px"><span>The price</span><span>on the ticket</span><span class="hl">should be</span><span>the price</span><span>of the ticket.</span></div>
+      </div>
+      <div class="panel">
+        <span class="cap">Magenta lead</span>
+        <div class="stack mag" style="font-size:38px"><span>The price</span><span>on the ticket</span><span class="hl">should be</span><span>the price</span><span>of the ticket.</span></div>
+      </div>
+    </div>
+    <ul class="rules">
+      <li><b>Stacked in five lines:</b> THE PRICE / ON THE TICKET / SHOULD BE / THE PRICE / OF THE TICKET.</li>
+      <li><b>Highlight only "should be":</b> every other word stays ice. Never highlight any other words.</li>
+      <li><b>Highlight color:</b> magenta on blue-lead posts, electric blue on magenta-lead posts.</li>
+      <li><b>One line:</b> in a caption or a bio, write it as a normal sentence in sentence case.</li>
+    </ul>
+  </section>
+
+  <section id="color">
+    <h2><small>03</small>Color</h2>
+    <p>Every FAIRPASS surface is <strong>Night</strong>. Text is <strong>Ice</strong>. Electric blue and magenta are the two accents, and each post uses one as its lead.</p>
+    <div class="swatches">
+      <div class="sw"><i style="background:#0A0A12"></i><b>Night</b><code>#0A0A12</code><span>Every background</span></div>
+      <div class="sw"><i style="background:#E8ECFF"></i><b>Ice</b><code>#E8ECFF</code><span>Text and wordmark</span></div>
+      <div class="sw"><i style="background:#2E5BFF"></i><b>Electric blue</b><code>#2E5BFF</code><span>Accent, large type only</span></div>
+      <div class="sw"><i style="background:#FF2E88"></i><b>Magenta</b><code>#FF2E88</code><span>Accent</span></div>
+      <div class="sw"><i style="background:#8FA6FF"></i><b>Blue tint</b><code>#8FA6FF</code><span>Small blue text, links</span></div>
+      <div class="sw"><i style="background:#B9C2EC"></i><b>Ice dim</b><code>#B9C2EC</code><span>Labels, source lines</span></div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Variant</th><th>Big number and lead</th><th>"Should be"</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td>Blue lead</td><td><span class="dot" style="background:#2E5BFF"></span>Electric blue</td><td><span class="dot" style="background:#FF2E88"></span>Magenta</td><td>The default for every post</td></tr>
+          <tr><td>Magenta lead</td><td><span class="dot" style="background:#FF2E88"></span>Magenta</td><td><span class="dot" style="background:#2E5BFF"></span>Electric blue</td><td>Every other post in the grid, for rhythm</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="rules">
+      <li><b>Electric blue on Night:</b> only at 24 px and up, or bold 19 px and up. Use Blue tint for anything smaller.</li>
+      <li><b>Ice text on a magenta fill:</b> don't. It's too low in contrast. Put Night text on magenta instead.</li>
+      <li><b>One accent per element:</b> never fade blue into magenta, and never use both on one word.</li>
+    </ul>
+  </section>
+
+  <section id="type">
+    <h2><small>04</small>Type</h2>
+    <div class="grid2">
+      <div class="panel spec">
+        <span class="cap">Display: Anton</span>
+        <div class="sample-d">$50 face. $107 resale.</div>
+        <p>For the wordmark, headlines, prices, the big multiple and the slogan. Always uppercase.</p>
+      </div>
+      <div class="panel spec">
+        <span class="cap">Body: Work Sans</span>
+        <div class="sample-b">Bid what it's worth to you. Everyone who wins pays the same price.</div>
+        <p>For captions, bios, website text and labels. Regular 400 for text, SemiBold 600 for uppercase labels with wide letter spacing.</p>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table class="scale">
+        <thead><tr><th>Role</th><th>Font</th><th>Post (1080 px wide)</th><th>Web</th></tr></thead>
+        <tbody>
+          <tr><td>Big multiple</td><td>Anton</td><td>300 px</td><td>96 px</td></tr>
+          <tr><td>Headline</td><td>Anton</td><td>96 px</td><td>48 px</td></tr>
+          <tr><td>Slogan stack</td><td>Anton</td><td>72 px, line height 1.0</td><td>40 px</td></tr>
+          <tr><td>Price</td><td>Anton</td><td>96 px</td><td>32 px</td></tr>
+          <tr><td>Label</td><td>Work Sans 600, caps, 0.1 em spacing</td><td>28 px</td><td>12 px</td></tr>
+          <tr><td>Body</td><td>Work Sans 400</td><td>32 px</td><td>16 px</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Both fonts are free on Google Fonts.</p>
+  </section>
+
+  <section id="wordmark">
+    <h2><small>05</small>Wordmark and profile image</h2>
+    <div class="marks">
+      <div class="mark-box"><span class="wordmark">FAIRPASS</span></div>
+      <div class="avatar" aria-label="Profile image: FAIR over PASS"><span class="wordmark"><span>FAIR</span><span>PASS</span></span></div>
+    </div>
+    <ul class="rules">
+      <li><b>Wordmark:</b> FAIRPASS in Anton, letter spacing 0.05 em, Ice on Night.</li>
+      <li><b>Profile image:</b> FAIR stacked over PASS, PASS in electric blue, on a Night circle. It stays readable at Instagram's small circle size.</li>
+      <li><b>Clear space:</b> keep at least the height of one letter empty on every side.</li>
+      <li><b>Don't:</b> stretch it, outline it, add a shadow or set it in another font.</li>
+    </ul>
+  </section>
+
+  <section id="posts">
+    <h2><small>06</small>Post templates</h2>
+    <div class="posts">
+      <div class="variant">
+        <div class="post">
+          <div class="top">It's Murph Tonight · Detroit</div>
+          <div class="mid">
+            <div class="pair">
+              <div><span class="lbl">Face value</span><span class="val">$50</span></div>
+              <div><span class="lbl">Resale today</span><span class="val">$107</span></div>
+            </div>
+            <div class="big">2.1X</div>
+            <div class="stack"><span>The price</span><span>on the ticket</span><span class="hl">should be</span><span>the price</span><span>of the ticket.</span></div>
+          </div>
+          <div class="foot"><span>Checked Nov 20 · TicketSmarter</span><span class="wordmark">FAIRPASS</span></div>
+        </div>
+        <span class="cap">Price Gap, blue lead · 1080 x 1350</span>
+      </div>
+      <div class="variant">
+        <div class="post mag">
+          <div class="top">It's Murph Tonight · Detroit</div>
+          <div class="mid">
+            <div class="pair">
+              <div><span class="lbl">Face value</span><span class="val">$50</span></div>
+              <div><span class="lbl">Resale today</span><span class="val">$107</span></div>
+            </div>
+            <div class="big">2.1X</div>
+            <div class="stack mag"><span>The price</span><span>on the ticket</span><span class="hl">should be</span><span>the price</span><span>of the ticket.</span></div>
+          </div>
+          <div class="foot"><span>Checked Nov 20 · TicketSmarter</span><span class="wordmark">FAIRPASS</span></div>
+        </div>
+        <span class="cap">Price Gap, magenta lead · 1080 x 1350</span>
+      </div>
+      <div class="variant">
+        <div class="post sq">
+          <div class="stack"><span>The price</span><span>on the ticket</span><span class="hl">should be</span><span>the price</span><span>of the ticket.</span></div>
+          <div class="foot"><span>@fairpasstix</span><span class="wordmark">FAIRPASS</span></div>
+        </div>
+        <span class="cap">Slogan, blue lead · 1080 x 1080</span>
+      </div>
+    </div>
+    <p>Every Price Gap post carries the show, venue, face value, resale price, the multiple, and a source line with the site and the time checked.</p>
+  </section>
+
+  <section id="voice">
+    <h2><small>07</small>Voice</h2>
+    <ul class="rules">
+      <li><b>Plain and factual:</b> short sentences, real numbers, no hype.</li>
+      <li><b>Every number has a source and a time.</b> Recheck resale prices right before posting.</li>
+      <li><b>Talk about the gap, not anyone's intent.</b> No "scam" or "illegal". Lawsuits only as filed allegations or stated verdicts, with a link.</li>
+      <li><b>Honest about where we are:</b> say "we're building" and point to the waitlist. Don't promise features the product doesn't have yet.</li>
+      <li><b>Fan receipts:</b> blur names, emails, order numbers and barcodes. Credit fans only if they agree.</li>
+    </ul>
+    <p>These rules come from the guardrails in the Detroit campaign plan in the repo.</p>
+  </section>
+
+  <section id="dos">
+    <h2><small>08</small>Do and don't</h2>
+    <div class="dd">
+      <div class="panel">
+        <h3>Do</h3>
+        <ul class="rules">
+          <li>Keep every background Night.</li>
+          <li>Lead with one big number.</li>
+          <li>Alternate blue-lead and magenta-lead posts.</li>
+          <li>Highlight "should be" and nothing else.</li>
+        </ul>
+      </div>
+      <div class="panel dont">
+        <h3>Don't</h3>
+        <ul class="rules">
+          <li>Use white, gray or photo backgrounds behind the slogan.</li>
+          <li>Highlight other words in the slogan.</li>
+          <li>Mix both accents in one word or gradient.</li>
+          <li>Set body text in Anton.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="tokens">
+    <h2><small>09</small>Tokens for the app and website</h2>
+<pre>:root {
+  --fp-night: #0A0A12;     /* every background */
+  --fp-ice: #E8ECFF;       /* text, wordmark */
+  --fp-ice-dim: #B9C2EC;   /* labels, source lines */
+  --fp-blue: #2E5BFF;      /* accent, 24px+ only */
+  --fp-blue-tint: #8FA6FF; /* small blue text, links */
+  --fp-magenta: #FF2E88;   /* accent */
+  --fp-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --fp-body: "Work Sans", system-ui, sans-serif;
+}</pre>
+  </section>
+
+  <p class="foot-note">Sample numbers: It's Murph Tonight, $50 face value before fees, $107 cheapest resale on TicketSmarter, checked Nov 20, 2026. Recheck before posting.</p>
+</div>
+</body>
+</html>
