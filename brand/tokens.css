@@ -1,0 +1,14 @@
+/* FAIRPASS brand tokens. See brand/README.md for usage rules. */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --fp-night: #0A0A12;     /* every background */
+  --fp-ice: #E8ECFF;       /* text, wordmark */
+  --fp-ice-dim: #B9C2EC;   /* labels, source lines */
+  --fp-blue: #2E5BFF;      /* lead accent; 24px+ only on Night */
+  --fp-blue-tint: #8FA6FF; /* small blue text, links */
+  --fp-magenta: #FF2E88;   /* second accent; Night text on it, never Ice */
+
+  --fp-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --fp-body: "Work Sans", system-ui, sans-serif;
+}
