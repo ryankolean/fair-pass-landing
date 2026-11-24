@@ -729,6 +729,47 @@
       color: var(--ice-dim);
     }
 
+    .waitlist__status {
+      min-height: 1.6em;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--ice);
+    }
+    .waitlist__status[data-state="error"] { color: var(--magenta); }
+
+    /* Social links: Instagram and Facebook, @fairpasstix */
+    .social-follow {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .social-follow__label { color: var(--ice-dim); }
+    .social-follow__links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--ice);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.7rem 1.1rem;
+      font-weight: 600;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .social-link svg { color: var(--blue-tint); }
+    .social-link:hover {
+      border-color: var(--blue);
+      background: rgba(46, 91, 255, 0.12);
+    }
+    .social-link[hidden] { display: none; }
+
     /* ============================================================
        FOOTER
        ============================================================ */
@@ -785,6 +826,7 @@
     .footer__social a:hover {
       color: var(--ice);
     }
+    .footer__social a[hidden] { display: none; }
 
     /* ============================================================
        RESPONSIVE
@@ -1078,7 +1120,7 @@
   <section class="section waitlist" id="waitlist">
     <div class="container waitlist__inner">
       <h2 class="reveal">Be first in line.</h2>
-      <p class="waitlist__sub reveal reveal-delay-1">Join the waitlist to get early access when FAIRPASS launches.</p>
+      <p class="waitlist__sub reveal reveal-delay-1">Join the waitlist for early access and FAIRPASS app updates by email.</p>
 
       <div class="waitlist__toggle reveal reveal-delay-2" role="radiogroup" aria-label="I am a">
         <button class="waitlist__toggle-btn label active" role="radio" aria-checked="true" data-type="fan">Fan</button>
@@ -1086,20 +1128,36 @@
         <button class="waitlist__toggle-btn label" role="radio" aria-checked="false" data-type="artist">Artist</button>
       </div>
 
-      <form class="waitlist__form reveal reveal-delay-3" action="mailto:waitlist@fairpass.io" method="GET" id="waitlistForm">
+      <form class="waitlist__form reveal reveal-delay-3" action="mailto:waitlist@fairpass.io" method="GET" id="waitlistForm" novalidate>
         <label for="waitlistEmail" class="sr-only">Email address</label>
         <input
           class="waitlist__input"
           type="email"
           id="waitlistEmail"
-          name="subject"
+          name="email_address"
           placeholder="you@email.com"
           required
           autocomplete="email"
         >
         <button type="submit" class="btn btn--primary">Join</button>
       </form>
+      <p class="waitlist__status" id="waitlistStatus" role="status" aria-live="polite"></p>
       <p class="waitlist__fine reveal reveal-delay-4">We'll never spam you. Unsubscribe anytime.</p>
+
+      <div class="social-follow reveal reveal-delay-4">
+        <span class="social-follow__label label">Follow FAIRPASS</span>
+        <div class="social-follow__links">
+          <a class="social-link" href="https://www.instagram.com/fairpasstix/" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Instagram @fairpasstix
+          </a>
+          <!-- Facebook: the FAIRPASS Page (fairpasstix) isn't live yet. Remove `hidden` here and in the footer once it is. -->
+          <a class="social-link" href="https://www.facebook.com/fairpasstix" target="_blank" rel="noopener" data-social="facebook" hidden>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1119,8 +1177,12 @@
         <a href="#" aria-label="X (Twitter)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-        <a href="#" aria-label="Instagram">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <a href="https://www.instagram.com/fairpasstix/" target="_blank" rel="noopener" aria-label="FAIRPASS on Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <!-- Facebook: hidden until the FAIRPASS Page is live (see the waitlist section). -->
+        <a href="https://www.facebook.com/fairpasstix" target="_blank" rel="noopener" aria-label="FAIRPASS on Facebook" data-social="facebook" hidden>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
         </a>
       </div>
     </div>
@@ -1180,15 +1242,73 @@
       });
     });
 
-    // ---- Waitlist form ----
+    // ---- Waitlist form: Kit (kit.com) email signup ----
+    // Paste the form action URL from your Kit form's HTML embed code, for example
+    // 'https://app.kit.com/forms/1234567/subscriptions'. While this is empty, the
+    // form falls back to opening an email to waitlist@fairpass.io. See README.md.
+    const KIT_FORM_ACTION = '';
+
     const waitlistForm = document.getElementById('waitlistForm');
-    waitlistForm.addEventListener('submit', (e) => {
+    const waitlistEmail = document.getElementById('waitlistEmail');
+    const waitlistStatus = document.getElementById('waitlistStatus');
+    const waitlistButton = waitlistForm.querySelector('button[type="submit"]');
+
+    function kitAction() {
+      try {
+        const url = new URL(KIT_FORM_ACTION);
+        const okHost = ['app.kit.com', 'app.convertkit.com'].includes(url.hostname);
+        return url.protocol === 'https:' && okHost && /^\/forms\/\d+\/subscriptions\/?$/.test(url.pathname) ? url.href : '';
+      } catch (err) {
+        return '';
+      }
+    }
+
+    function setStatus(text, state) {
+      waitlistStatus.textContent = text;
+      waitlistStatus.dataset.state = state || '';
+    }
+
+    waitlistForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('waitlistEmail').value;
+      const email = waitlistEmail.value.trim();
+      if (!waitlistEmail.checkValidity() || !email) {
+        setStatus('Enter a valid email address.', 'error');
+        waitlistEmail.focus();
+        return;
+      }
       const type = document.querySelector('.waitlist__toggle-btn.active').dataset.type;
-      const subject = encodeURIComponent(`FAIRPASS Waitlist: ${type}`);
-      const body = encodeURIComponent(`Email: ${email}\nType: ${type}\n\nI'd like to join the FAIRPASS waitlist!`);
-      window.location.href = `mailto:waitlist@fairpass.io?subject=${subject}&body=${body}`;
+      const action = kitAction();
+
+      if (!action) {
+        const subject = encodeURIComponent(`FAIRPASS Waitlist: ${type}`);
+        const body = encodeURIComponent(`Email: ${email}\nType: ${type}\n\nI'd like to join the FAIRPASS waitlist!`);
+        window.location.href = `mailto:waitlist@fairpass.io?subject=${subject}&body=${body}`;
+        return;
+      }
+
+      waitlistButton.disabled = true;
+      setStatus('Signing you up…');
+      try {
+        const data = new FormData();
+        data.append('email_address', email);
+        const res = await fetch(action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.status !== 'failed' && !json.errors) {
+          waitlistForm.reset();
+          setStatus("You're on the list. Watch your inbox for FAIRPASS updates.", 'success');
+        } else {
+          setStatus("That email didn't go through. Check it and try again.", 'error');
+        }
+      } catch (err) {
+        // If the browser blocks the background request, send the form to Kit directly in a new tab.
+        waitlistForm.action = action;
+        waitlistForm.method = 'POST';
+        waitlistForm.target = '_blank';
+        HTMLFormElement.prototype.submit.call(waitlistForm);
+        setStatus('Finish signing up in the Kit tab that just opened.', 'success');
+      } finally {
+        waitlistButton.disabled = false;
+      }
     });
   </script>
 </body>
